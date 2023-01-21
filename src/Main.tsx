@@ -94,7 +94,7 @@ const baseStyle = {
   color: 'white',
   outline: 'none',
   transition: 'border .05s ease-in-out',
-  cursor: ' pointer',
+  cursor: 'pointer',
 };
 
 const acceptStyle = {
