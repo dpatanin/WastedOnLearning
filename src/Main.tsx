@@ -1,20 +1,29 @@
-import { Container, Heading, Icon, Image, Stack, Text } from '@chakra-ui/react';
-import { useCallback, useMemo } from 'react';
+import {
+  Box,
+  Container,
+  Heading,
+  Icon,
+  Image,
+  Stack,
+  Text,
+} from '@chakra-ui/react';
+import { useCallback, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { TfiUpload } from 'react-icons/tfi';
+import { accept } from './calculator/controller';
 import funnyMessage from './funnyMessages';
 
 export default function Main() {
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    // Do something with the files
-  }, []);
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({ onDrop });
+  const [type, setType] = useState('');
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      setType(acceptedFiles[0].type);
+    },
+    [setType]
+  );
+
+  const { getRootProps, getInputProps, isDragAccept, isDragReject } =
+    useDropzone({ onDrop, accept });
 
   const style = useMemo(
     () => ({
@@ -24,6 +33,21 @@ export default function Main() {
     }),
     [isDragAccept, isDragReject]
   );
+
+  const dropZoneMessage = () => {
+    if (isDragAccept) {
+      return funnyMessage();
+    } else if (isDragReject) {
+      return 'This filetype is currently not supported. You can either extend it yourself or kindly open an issue on github.';
+    } else {
+      return [
+        'Drag `n` drop some files here, or click to select files.',
+        <br key="newLine"/>,
+        'Supported Filetypes: ',
+        Object.values(accept).map((val)=> val + ',')
+      ];
+    }
+  };
 
   return (
     <Container maxW="4xl">
@@ -46,17 +70,13 @@ export default function Main() {
           receive an estimation how long it would take them.
         </Text>
         <Text>Placeholder for settings.</Text>
-        <div className="container">
-          <div {...getRootProps({ style })}>
+        <Box className="container">
+          <Box {...getRootProps({ style })}>
             <input {...getInputProps()} />
             <Icon as={TfiUpload} />
-            {isDragActive ? (
-              <p>{funnyMessage()}</p>
-            ) : (
-              <p>Drag 'n' drop some files here, or click to select files.</p>
-            )}
-          </div>
-        </div>
+            <Text>{dropZoneMessage()}</Text>
+          </Box>
+        </Box>
       </Stack>
     </Container>
   );
