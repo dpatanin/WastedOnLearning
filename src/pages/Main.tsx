@@ -14,9 +14,9 @@ import {
 import { useCallback, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { TfiUpload } from 'react-icons/tfi';
-import { accept, controller } from './calculator/controller';
-import FileDurationItem from './FileDurationItem';
-import funnyMessage from './funnyMessages';
+import { accept, controller } from '../calculator/controller';
+import FileDurationItem from '../components/FileDurationItem';
+import funnyMessage from '../lib/funnyMessages';
 
 export default function Main() {
   const [fileDurArr, setFileDurArr] = useState<[string, Promise<number>][]>([]);

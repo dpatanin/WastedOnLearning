@@ -1,7 +1,7 @@
 import { ChakraProvider, Icon, Link } from '@chakra-ui/react';
 import { VscGithub } from 'react-icons/vsc';
 import './App.css';
-import Main from './Main';
+import Main from './pages/Main';
 
 function App() {
   return (
