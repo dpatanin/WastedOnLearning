@@ -10,16 +10,17 @@ import {
 import { useCallback, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { TfiUpload } from 'react-icons/tfi';
-import { accept } from './calculator/controller';
+import { accept, controller } from './calculator/controller';
 import funnyMessage from './funnyMessages';
 
 export default function Main() {
-  const [type, setType] = useState('');
+  const [duration, setDuration] = useState(0);
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      setType(acceptedFiles[0].type);
+      controller(acceptedFiles[0]).then((duration) => setDuration(duration));
     },
-    [setType]
+    [setDuration]
   );
 
   const { getRootProps, getInputProps, isDragAccept, isDragReject } =
@@ -42,9 +43,9 @@ export default function Main() {
     } else {
       return [
         'Drag `n` drop some files here, or click to select files.',
-        <br key="newLine"/>,
+        <br key="newLine" />,
         'Supported Filetypes: ',
-        Object.values(accept).map((val)=> val + ',')
+        Object.values(accept).map((val) => val + ','),
       ];
     }
   };
@@ -77,6 +78,7 @@ export default function Main() {
             <Text>{dropZoneMessage()}</Text>
           </Box>
         </Box>
+        <Text>Duration: {duration}</Text>
       </Stack>
     </Container>
   );
