@@ -9,12 +9,15 @@ export const funnyMessages = [
   "That's .. disappointing",
   'I want cookies',
   'MORE',
-  "I'm not getting paid, help me!",
+  "I'm not getting paid!",
   '(≧◡≦) ♡',
   'UwU',
-  'Why are you like this?',
+  'Why am I like this?',
   'Stop .. I`m already fat',
   'That hurts >.<',
+  'I can fit way more ;)',
+  'I`ll do it .. I guess',
+  'Ready to catch!'
 ];
 
 export const funnyMessage = () =>
