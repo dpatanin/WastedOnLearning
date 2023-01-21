@@ -1,26 +1,35 @@
 import {
   Box,
+  Card,
+  CardBody,
+  CardHeader,
   Container,
   Heading,
   Icon,
   Image,
   Stack,
+  StackDivider,
   Text,
 } from '@chakra-ui/react';
 import { useCallback, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { TfiUpload } from 'react-icons/tfi';
 import { accept, controller } from './calculator/controller';
+import FileDurationItem from './FileDurationItem';
 import funnyMessage from './funnyMessages';
 
 export default function Main() {
-  const [duration, setDuration] = useState(0);
+  const [fileDurArr, setFileDurArr] = useState<[string, Promise<number>][]>([]);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      controller(acceptedFiles[0]).then((duration) => setDuration(duration));
+      setFileDurArr(
+        fileDurArr.concat(
+          acceptedFiles.map((file) => [file.name, controller(file)])
+        )
+      );
     },
-    [setDuration]
+    [fileDurArr, setFileDurArr]
   );
 
   const { getRootProps, getInputProps, isDragAccept, isDragReject } =
@@ -71,6 +80,7 @@ export default function Main() {
           receive an estimation how long it would take them.
         </Text>
         <Text>Placeholder for settings.</Text>
+
         <Box className="container">
           <Box {...getRootProps({ style })}>
             <input {...getInputProps()} />
@@ -78,7 +88,26 @@ export default function Main() {
             <Text>{dropZoneMessage()}</Text>
           </Box>
         </Box>
-        <Text>Duration: {duration}</Text>
+
+        {fileDurArr.length > 0 && (
+          <Card>
+            <CardHeader>
+              <Heading size="md">Duration list</Heading>
+            </CardHeader>
+
+            <CardBody>
+              <Stack divider={<StackDivider />} spacing="4">
+                {fileDurArr.map((file) => (
+                  <FileDurationItem
+                    key={file[0]}
+                    name={file[0]}
+                    dur={file[1]}
+                  />
+                ))}
+              </Stack>
+            </CardBody>
+          </Card>
+        )}
       </Stack>
     </Container>
   );
