@@ -14,22 +14,30 @@ import {
 import { useCallback, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { TfiUpload } from 'react-icons/tfi';
-import { accept, controller } from '../calculator/controller';
+import { accept, CalParams, controller } from '../calculator/controller';
 import FileDurationItem from '../components/FileDurationItem';
+import ParamSettings from '../components/ParamSettings';
 import funnyMessage from '../lib/funnyMessages';
 
 export default function Main() {
   const [fileDurArr, setFileDurArr] = useState<[string, Promise<number>][]>([]);
+  const [calParams, setCalParams] = useState<CalParams>({
+    readingSpeed: 200,
+    imageViewTime: 10,
+    complexityFactor: 1,
+  });
+
+  const onInputChange = (params: CalParams) => setCalParams(params);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       setFileDurArr(
         fileDurArr.concat(
-          acceptedFiles.map((file) => [file.name, controller(file)])
+          acceptedFiles.map((file) => [file.name, controller(file, calParams)])
         )
       );
     },
-    [fileDurArr, setFileDurArr]
+    [fileDurArr, setFileDurArr, calParams]
   );
 
   const { getRootProps, getInputProps, isDragAccept, isDragReject } =
@@ -79,7 +87,8 @@ export default function Main() {
           courses. Upload the file(s), define the content & target audience and
           receive an estimation how long it would take them.
         </Text>
-        <Text>Placeholder for settings.</Text>
+
+        <ParamSettings params={calParams} onInputChange={onInputChange} />
 
         <Box className="container">
           <Box {...getRootProps({ style })}>
