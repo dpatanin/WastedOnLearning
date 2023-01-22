@@ -16,7 +16,7 @@ If you encounter bugs, errors or require support for a not yet supported data ty
 
 This project runs on NodeJS.
 For local development clone or download this repository and install the dependencies with `npm install`.
-To run the app in the development mode.\
+To run the app in the development mode, execute `npm start`.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
