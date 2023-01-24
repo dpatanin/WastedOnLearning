@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Collapse,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -90,100 +89,101 @@ export default function ParamSettings({
           }
           alignSelf="flex-end"
         >
-          Advanced Settings
+          {params.advanced ? 'Default ' : 'Advanced '} Settings
         </Button>
       </Stack>
 
-      <Collapse in={params.advanced} animateOpacity>
-        <Stack direction={{ base: 'column', md: 'row' }}>
-          <Box w={{ base: '100%', md: '40%' }}>
-            <Text px="2" pb="2" color="white">
-              Words per minute
-            </Text>
-            <NumberInput
-              defaultValue={params.readingSpeed}
-              min={10}
-              max={1000}
-              variant="filled"
-              allowMouseWheel
-              onChange={(_str, val) => {
-                onInputChange({
-                  readingSpeed: val,
-                  imageViewTime: params.imageViewTime,
-                  complexityFactor: params.complexityFactor,
-                  advanced: params.advanced,
-                  contentType: params.contentType,
-                  audienceType: params.audienceType,
-                });
-              }}
-            >
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-          </Box>
-          <Box w={{ base: '100%', md: '40%' }}>
-            <Text px="2" pb="2" color="white">
-              Seconds per image
-            </Text>
-            <NumberInput
-              defaultValue={params.imageViewTime}
-              min={0.01}
-              max={8.0}
-              step={0.01}
-              variant="filled"
-              allowMouseWheel
-              onChange={(_str, val) => {
-                onInputChange({
-                  readingSpeed: params.readingSpeed,
-                  imageViewTime: val,
-                  complexityFactor: params.complexityFactor,
-                  advanced: params.advanced,
-                  contentType: params.contentType,
-                  audienceType: params.audienceType,
-                });
-              }}
-            >
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-          </Box>
-          <Box w={{ base: '100%', md: '40%' }}>
-            <Text px="2" pb="2" color="white">
-              Complexity factor
-            </Text>
-            <NumberInput
-              defaultValue={params.complexityFactor}
-              min={0.1}
-              max={5.0}
-              step={0.1}
-              variant="filled"
-              allowMouseWheel
-              onChange={(_str, val) => {
-                onInputChange({
-                  readingSpeed: params.readingSpeed,
-                  imageViewTime: params.imageViewTime,
-                  complexityFactor: val,
-                  advanced: params.advanced,
-                  contentType: params.contentType,
-                  audienceType: params.audienceType,
-                });
-              }}
-            >
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-          </Box>
-        </Stack>
-      </Collapse>
+      <Stack direction={{ base: 'column', md: 'row' }}>
+        <Box w={{ base: '100%', md: '40%' }}>
+          <Text px="2" pb="2" color="white">
+            Words per minute
+          </Text>
+          <NumberInput
+            value={params.readingSpeed}
+            min={10}
+            max={1000}
+            variant="filled"
+            allowMouseWheel
+            onChange={(_str, val) => {
+              onInputChange({
+                readingSpeed: val,
+                imageViewTime: params.imageViewTime,
+                complexityFactor: params.complexityFactor,
+                advanced: params.advanced,
+                contentType: params.contentType,
+                audienceType: params.audienceType,
+              });
+            }}
+            isDisabled={!params.advanced}
+          >
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </Box>
+        <Box w={{ base: '100%', md: '40%' }}>
+          <Text px="2" pb="2" color="white">
+            Seconds per image
+          </Text>
+          <NumberInput
+            value={params.imageViewTime}
+            min={0.01}
+            max={8.0}
+            step={0.01}
+            variant="filled"
+            allowMouseWheel
+            onChange={(_str, val) => {
+              onInputChange({
+                readingSpeed: params.readingSpeed,
+                imageViewTime: val,
+                complexityFactor: params.complexityFactor,
+                advanced: params.advanced,
+                contentType: params.contentType,
+                audienceType: params.audienceType,
+              });
+            }}
+            isDisabled={!params.advanced}
+          >
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </Box>
+        <Box w={{ base: '100%', md: '40%' }}>
+          <Text px="2" pb="2" color="white">
+            Complexity factor
+          </Text>
+          <NumberInput
+            value={params.complexityFactor}
+            min={0.1}
+            max={5.0}
+            step={0.1}
+            variant="filled"
+            allowMouseWheel
+            onChange={(_str, val) => {
+              onInputChange({
+                readingSpeed: params.readingSpeed,
+                imageViewTime: params.imageViewTime,
+                complexityFactor: val,
+                advanced: params.advanced,
+                contentType: params.contentType,
+                audienceType: params.audienceType,
+              });
+            }}
+            isDisabled={!params.advanced}
+          >
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </Box>
+      </Stack>
     </Stack>
   );
 }
