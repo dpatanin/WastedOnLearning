@@ -116,3 +116,90 @@ For elderly people this tool refers to:
 Once again, this tool is specifically designed to simplify. If you disagree, please propose a change.
 
 ### Time per Image
+
+Unfortunately, the specific question "How long do people look at pictures in eLearnings?" hasn't been studied very well today.
+(Mostly, studies focus on the effects of visual material, not on the duration on it.)
+So we need to derive a realistic and practical value from general studies on human perception and image processing.
+In order to do so we first need to analyze what context and kind of pictures we assume to be most prominent in the use case WastedOnLearning is designed for.
+This tool is designed for eLearning and digital training material. We defined the general factors and categories, thus we will define which type of images are the most probable to appear for which category.
+It is important to note that such a practice sets an assumption and may not accurately estimate the time if the actual content deviates heavily from this assumption.
+However, if we'd want to actually calculate the image view time we would need to process and analyze each image, which could be done with an AI trained to do so.
+Probably a model is freely available for a suited AI able to achieve this. But the actual implementation surpasses my current contingent on this tool,
+if you would like to have such a neat solution, feel free to request or propose.
+
+If we do not calculate the estimated time base on image processing, but use a "blind estimation", the following definitions are set for this tool:
+
+|             | Seconds per image |
+| ----------- | ----------------- |
+| Informative | 1.2               |
+| Educational | 1.8               |
+| Marketing   | 0.75              |
+| Scientific  | 4                 |
+
+Due to the lack of specific research, the differences in different audience groups will not be regarded.
+In general, many studies exist which have examined the general learning & processing speed of various age groups.
+This will be considered later in the overall complexity factor.
+
+Now to the research that is available.
+The first, and probably most famous one, is the MIT study conducted on image processing time:
+
+[Potter, M.C., Wyble, B., Hagmann, C.E. et al. Detecting meaning in RSVP at 13 ms per picture. Atten Percept Psychophys 76, 270–279 (2014). https://doi.org/10.3758/s13414-013-0605-z](https://link.springer.com/article/10.3758/s13414-013-0605-z)
+
+Here we see that humans are able to process images displayed for only 13ms. Obviously, this case is far from comparable to digital material, as images in those are permanently visible.
+But this gives us an absolute lower value and an idea at how long someone would look **over** a picture without looking **at** the picture.
+To be more precise: If we consider irrelevant images like stock footage in marketing focused content, it is save to say that the reader does not spare much time on viewing those kinds of images.
+Of course it would surely be more than those 13ms. So, what's a good upper limit?
+
+[Microsoft Attention Spans Research Report](https://www.scribd.com/document/265348695/Microsoft-Attention-Spans-Research-Report#)
+
+According to a study conducted by Microsoft on attention spans, the average human attention span in the year 2013 was 8 seconds.
+Finally, let's assume the following definitions:
+
+- Marketing based content either includes images which do not provide any information (decorative), or overviews about prices or alike. So, this tool defines an average of 0.75 sec (0.5 - 1).
+- Informative content might also contain more images with illustrations to help understand the content, focused on simple graphs and analogies. Not much more than marketing based content, but more none the less: 1.2 sec.
+- Educational content gets more interesting because it features not only substantially more information per image, but the images are likely to be often times mandatory to understand, thus increasing the time to roughly about 1.8 sec.
+- Scientific literature features mostly illustrated results or alike, often times fairly complex in nature. To set the "maximum" of 8 sec would however be an overestimation since we talk about averages, hence we define a comfy 4 sec.
+
+This follows a bit the trend of the reading speeds, to have some anchor of orientation.
+
+### Interactions & Quizzes
+
+Defining additional durations due to interactions and quizzes is currently not regarded by this tool, as those depend highly on the technology used.
+For now, please consider a careful estimation with the complexity factor.
+
+### Complexity factor
+
+In the end, this tool aims for simplification and a quick, yet realistic average estimation.
+Besides the very tangible parameters, the remaining factors are addressed by a complexity factor.
+It multiplies the calculated time by a set factor, allowing for general adjustments.
+Though, in the current state of WastedOnLearning, it leaves more responsibility and awareness than desired in the hands of the user.
+
+A different role of the factor is the compensation for many unconsidered aspects.
+The current categories established are very broad and for the most part do not consider factors like age, familiarity with the content or other topics mentioned before.
+While a general compensatory function is not necessarily bad, for now it compensates for too many factors and poses high risks especially for overestimation.
+So, be aware how much of your content truly requires additional compensation or shows higher complexity than assessed already and avoid vast overestimations.
+
+## Indications & Future Potential
+
+At this point it is important to note that at the current state, this is a short term, on man solution to a complex topic.
+While it attempts to lean on scientific research, it still summarizes broadly in some areas and lacks substantial evidence in others.
+And this tool itself is not scientifically proven for its accuracy. Nonetheless it does offer a solution which is otherwise not available.
+
+As much as it is very rudimentary today, it still offers anticipating possibilities for any interested party.
+Following are suggestions for improvement and practical implications which might find interest.
+
+- The categories could be extended as they only offer a very, very general selection of groups and types of content.
+- The reading speed is the most well researched factor considered. But to be fully scientifically accurate, it would require a factorial structure as follows:
+  - Each target group has its own base reading speed (this is done).
+  - For each target group the relative reading speed deviation for each type of content needs to be calculated and considered.
+  - Right now, the relative factors are based on the data on students.
+  - The complexity of the text itself could be analyzed using a AI model, thus further automating the equation
+- The average view time per image is a rough estimation mostly based on general attention spans.
+  - Here a study might be required to conduct.
+  - The view time per image should be based on the type of image and not the general type of content.
+  - A basic image processing AI could be trained to categorize images.
+  - Text inside of images is not considered, this could also be solved by the same AI.
+- A model on how to estimate interactive elements (those would need to be detected by the tool though the respective module for an intuitive approach).
+- A model on how to estimate quizzes (those would need to be detected by the tool though the respective module for an intuitive approach).
+- Support for more file and package types.
+- Given more development and/or research, this tool can be used to verify learning & reading times of different materials in studies.
