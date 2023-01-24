@@ -14,28 +14,50 @@ import {
 import { useCallback, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { TfiUpload } from 'react-icons/tfi';
-import { accept, CalParams, controller } from '../calculator/controller';
+import { accept, baseParams } from '../calculator/controller';
 import FileDurationItem from '../components/FileDurationItem';
 import ParamSettings from '../components/ParamSettings';
 import funnyMessage from '../lib/funnyMessages';
+import { calImageViewTime, calReadingSpeed } from '../lib/helper';
+import { CalParams } from '../lib/types';
 
 export default function Main() {
   const [fileDurArr, setFileDurArr] = useState<[string, Promise<number>][]>([]);
   const [calParams, setCalParams] = useState<CalParams>({
-    readingSpeed: 200,
-    imageViewTime: 10,
+    readingSpeed: calReadingSpeed(
+      baseParams.contentType,
+      baseParams.audienceType
+    ),
+    imageViewTime: calImageViewTime(baseParams.contentType),
     complexityFactor: 1,
+    advanced: baseParams.advanced,
+    contentType: baseParams.contentType,
+    audienceType: baseParams.audienceType,
   });
 
-  const onInputChange = (params: CalParams) => setCalParams(params);
+  const onInputChange = (params: CalParams) => {
+    if (!calParams.advanced) {
+      setCalParams({
+        readingSpeed: calReadingSpeed(params.contentType, params.audienceType),
+        imageViewTime: calImageViewTime(params.contentType),
+        complexityFactor: params.complexityFactor,
+        advanced: params.advanced,
+        contentType: params.contentType,
+        audienceType: params.audienceType
+      });
+    } else {
+      setCalParams(params)
+    }
+  };
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      setFileDurArr(
-        fileDurArr.concat(
-          acceptedFiles.map((file) => [file.name, controller(file, calParams)])
-        )
-      );
+      console.log(calParams);
+      // setFileDurArr(
+      //   fileDurArr.concat(
+      //     acceptedFiles.map((file) => [file.name, controller(file, calParams)])
+      //   )
+      // );
     },
     [fileDurArr, setFileDurArr, calParams]
   );
@@ -106,12 +128,10 @@ export default function Main() {
 
             <CardBody>
               <Stack divider={<StackDivider />} spacing="4">
-                {fileDurArr.map((file) => (
-                  <FileDurationItem
-                    key={file[0]}
-                    name={file[0]}
-                    dur={file[1]}
-                  />
+                {fileDurArr.map((file, idx) => (
+                  <Box key={file[0] + idx}>
+                    <FileDurationItem name={file[0]} dur={file[1]} />
+                  </Box>
                 ))}
               </Stack>
             </CardBody>

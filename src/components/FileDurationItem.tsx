@@ -5,11 +5,9 @@ import { MdCancel } from 'react-icons/md';
 export default function FileDurationItem({
   name,
   dur,
-  key,
 }: {
   name: string;
   dur: Promise<number>;
-  key: string;
 }) {
   enum DurState {
     PENDING,
@@ -46,7 +44,7 @@ export default function FileDurationItem({
   };
 
   return (
-    <HStack key={key}>
+    <HStack>
       <Heading
         size="sm"
         overflow="hidden"
