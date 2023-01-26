@@ -184,7 +184,7 @@ The current categories established are very broad and for the most part do not c
 While a general compensatory function is not necessarily bad, for now it compensates for too many factors and poses high risks especially for overestimation.
 So, be aware how much of your content truly requires additional compensation or shows higher complexity than assessed already and avoid vast overestimations.
 
-For now, the complexity factor is constructed by comparing the relation of the content type and audience group, plus a total compensation constant of 0.4.
+For now, the complexity factor is constructed by comparing the relation of the content type and audience group, plus a total compensation constant of 0.2.
 
 ## Indications & Future Potential
 
