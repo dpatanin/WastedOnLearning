@@ -7,6 +7,7 @@ import {
   Heading,
   Icon,
   Image,
+  Spinner,
   Stack,
   StackDivider,
   Text,
@@ -14,7 +15,7 @@ import {
 import { useCallback, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { TfiUpload } from 'react-icons/tfi';
-import { accept } from '../calculator/controller';
+import { accept, controller } from '../calculator/controller';
 import FileDurationItem from '../components/FileDurationItem';
 import ParamSettings from '../components/ParamSettings';
 import { baseParams } from '../lib/factors';
@@ -27,7 +28,8 @@ import {
 import { CalParams } from '../lib/types';
 
 export default function Main() {
-  const [fileDurArr, setFileDurArr] = useState<[string, Promise<number>][]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fileDurArr, setFileDurArr] = useState<[string, number][]>([]);
   const [calParams, setCalParams] = useState<CalParams>({
     readingSpeed: calReadingSpeed(
       baseParams.contentType,
@@ -63,30 +65,34 @@ export default function Main() {
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      console.log(calParams);
-      // setFileDurArr(
-      //   fileDurArr.concat(
-      //     acceptedFiles.map((file) => [file.name, controller(file, calParams)])
-      //   )
-      // );
+      setIsLoading(true);
+      Promise.all(
+        acceptedFiles.map((file) => controller(file, calParams))
+      ).then((val) => {
+        setIsLoading(false);
+        setFileDurArr(fileDurArr.concat(val));
+      });
     },
     [fileDurArr, setFileDurArr, calParams]
   );
 
   const { getRootProps, getInputProps, isDragAccept, isDragReject } =
-    useDropzone({ onDrop, accept });
+    useDropzone({ onDrop, accept, disabled: isLoading });
 
   const style = useMemo(
     () => ({
       ...baseStyle,
       ...(isDragAccept ? acceptStyle : {}),
       ...(isDragReject ? rejectStyle : {}),
+      ...(isLoading ? disabledStyle : {}),
     }),
-    [isDragAccept, isDragReject]
+    [isDragAccept, isDragReject, isLoading]
   );
 
   const dropZoneMessage = () => {
-    if (isDragAccept) {
+    if (isLoading) {
+      return 'processing...';
+    } else if (isDragAccept) {
       return funnyMessage();
     } else if (isDragReject) {
       return 'This filetype is currently not supported. You can either extend it yourself or kindly open an issue on github.';
@@ -131,7 +137,7 @@ export default function Main() {
           </Box>
         </Box>
 
-        {fileDurArr.length > 0 && (
+        {(fileDurArr.length > 0 || isLoading) && (
           <Card>
             <CardHeader>
               <Heading size="md">Duration list</Heading>
@@ -145,6 +151,16 @@ export default function Main() {
                   </Box>
                 ))}
               </Stack>
+              {isLoading && (
+                <Spinner
+                  size="xl"
+                  alignSelf="center"
+                  thickness="4px"
+                  speed="0.65s"
+                  emptyColor="gray.200"
+                  color="blue.500"
+                />
+              )}
             </CardBody>
           </Card>
         )}
@@ -172,4 +188,8 @@ const acceptStyle = {
 
 const rejectStyle = {
   borderColor: '#ff1744',
+};
+
+const disabledStyle = {
+  borderColor: '#808080',
 };
