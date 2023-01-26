@@ -1,4 +1,13 @@
-import { AudienceType, ContentType } from './types';
+import { AudienceType, CalParams, ContentType } from './types';
+
+export const baseParams: CalParams = {
+  readingSpeed: 238,
+  imageViewTime: 1,
+  complexityFactor: 1.2,
+  advanced: false,
+  contentType: ContentType.INFORMATIVE,
+  audienceType: AudienceType.ADULTS,
+};
 
 export const facReadingSpeed = {
   [ContentType.INFORMATIVE]: 1,

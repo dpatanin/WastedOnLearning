@@ -1,5 +1,4 @@
-import { baseParams } from './../calculator/controller';
-import { facImageViewTime, facReadingSpeed } from './factors';
+import { baseParams, facImageViewTime, facReadingSpeed } from './factors';
 import { AudienceType, ContentType } from './types';
 
 export function countWords(text: string) {
@@ -18,5 +17,26 @@ export function calReadingSpeed(
 }
 
 export function calImageViewTime(contentType: ContentType) {
-  return facImageViewTime[contentType];
+  return baseParams.imageViewTime * facImageViewTime[contentType];
+}
+
+export function calComplexityFactor(
+  contentType: ContentType,
+  audienceType: AudienceType
+) {
+  const defaultCF =
+    baseParams.complexityFactor /
+    ((facReadingSpeed[baseParams.contentType] /
+      facReadingSpeed[baseParams.audienceType]) *
+      facImageViewTime[baseParams.contentType]);
+
+  return (
+    Math.round(
+      defaultCF *
+        (facReadingSpeed[contentType] /
+        facReadingSpeed[audienceType]) *
+        facImageViewTime[contentType] *
+        100
+    ) / 100
+  );
 }

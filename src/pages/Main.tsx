@@ -14,11 +14,16 @@ import {
 import { useCallback, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { TfiUpload } from 'react-icons/tfi';
-import { accept, baseParams } from '../calculator/controller';
+import { accept } from '../calculator/controller';
 import FileDurationItem from '../components/FileDurationItem';
 import ParamSettings from '../components/ParamSettings';
+import { baseParams } from '../lib/factors';
 import funnyMessage from '../lib/funnyMessages';
-import { calImageViewTime, calReadingSpeed } from '../lib/helper';
+import {
+  calComplexityFactor,
+  calImageViewTime,
+  calReadingSpeed,
+} from '../lib/helper';
 import { CalParams } from '../lib/types';
 
 export default function Main() {
@@ -29,7 +34,10 @@ export default function Main() {
       baseParams.audienceType
     ),
     imageViewTime: calImageViewTime(baseParams.contentType),
-    complexityFactor: 1,
+    complexityFactor: calComplexityFactor(
+      baseParams.contentType,
+      baseParams.audienceType
+    ),
     advanced: baseParams.advanced,
     contentType: baseParams.contentType,
     audienceType: baseParams.audienceType,
@@ -40,13 +48,16 @@ export default function Main() {
       setCalParams({
         readingSpeed: calReadingSpeed(params.contentType, params.audienceType),
         imageViewTime: calImageViewTime(params.contentType),
-        complexityFactor: params.complexityFactor,
+        complexityFactor: calComplexityFactor(
+          params.contentType,
+          params.audienceType
+        ),
         advanced: params.advanced,
         contentType: params.contentType,
-        audienceType: params.audienceType
+        audienceType: params.audienceType,
       });
     } else {
-      setCalParams(params)
+      setCalParams(params);
     }
   };
 

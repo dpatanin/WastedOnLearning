@@ -10,13 +10,6 @@ const CalType: { [key: string]: (file: File) => Promise<number> } = {
   'text/plain': TEXT,
 };
 
-export const baseParams = {
-  readingSpeed: 238,
-  advanced: false,
-  contentType: ContentType.INFORMATIVE,
-  audienceType: AudienceType.ADULTS,
-};
-
 export function controller(file: File, params: CalParams) {
   return CalType[file.type](file);
 }
