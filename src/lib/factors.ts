@@ -1,6 +1,6 @@
-import { AudienceType, CalParams, ContentType } from './types';
+import { AudienceType, CalSettings, ContentType } from './types';
 
-export const baseParams: CalParams = {
+export const baseParams: CalSettings = {
   readingSpeed: 238,
   imageViewTime: 1,
   complexityFactor: 1.2,

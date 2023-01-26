@@ -12,7 +12,7 @@ export enum AudienceType {
   NON_NATIVE = 'NON_NATIVE',
 }
 
-export type CalParams = {
+export type CalSettings = {
   readingSpeed: number;
   imageViewTime: number;
   complexityFactor: number;

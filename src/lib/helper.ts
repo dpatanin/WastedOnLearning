@@ -5,6 +5,7 @@ export function countWords(text: string) {
   return text.split(' ').length;
 }
 
+// Returns words per minute
 export function calReadingSpeed(
   contentType: ContentType,
   audienceType: AudienceType
@@ -16,6 +17,7 @@ export function calReadingSpeed(
   );
 }
 
+// Returns seconds per image
 export function calImageViewTime(contentType: ContentType) {
   return baseParams.imageViewTime * facImageViewTime[contentType];
 }
@@ -33,8 +35,7 @@ export function calComplexityFactor(
   return (
     Math.round(
       defaultCF *
-        (facReadingSpeed[contentType] /
-        facReadingSpeed[audienceType]) *
+        (facReadingSpeed[contentType] / facReadingSpeed[audienceType]) *
         facImageViewTime[contentType] *
         100
     ) / 100

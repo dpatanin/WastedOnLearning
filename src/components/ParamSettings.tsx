@@ -11,14 +11,14 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { MdBuild } from 'react-icons/md';
-import { AudienceType, CalParams, ContentType } from '../lib/types';
+import { AudienceType, CalSettings, ContentType } from '../lib/types';
 
 export default function ParamSettings({
   params,
   onInputChange,
 }: {
-  params: CalParams;
-  onInputChange: (params: CalParams) => void;
+  params: CalSettings;
+  onInputChange: (params: CalSettings) => void;
 }) {
   return (
     <Stack spacing={4} textAlign="left">

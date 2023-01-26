@@ -25,12 +25,12 @@ import {
   calImageViewTime,
   calReadingSpeed,
 } from '../lib/helper';
-import { CalParams } from '../lib/types';
+import { CalSettings } from '../lib/types';
 
 export default function Main() {
   const [isLoading, setIsLoading] = useState(false);
   const [fileDurArr, setFileDurArr] = useState<[string, number][]>([]);
-  const [calParams, setCalParams] = useState<CalParams>({
+  const [calParams, setCalParams] = useState<CalSettings>({
     readingSpeed: calReadingSpeed(
       baseParams.contentType,
       baseParams.audienceType
@@ -45,7 +45,7 @@ export default function Main() {
     audienceType: baseParams.audienceType,
   });
 
-  const onInputChange = (params: CalParams) => {
+  const onInputChange = (params: CalSettings) => {
     if (!calParams.advanced) {
       setCalParams({
         readingSpeed: calReadingSpeed(params.contentType, params.audienceType),
@@ -67,7 +67,14 @@ export default function Main() {
     (acceptedFiles: File[]) => {
       setIsLoading(true);
       Promise.all(
-        acceptedFiles.map((file) => controller(file, calParams))
+        acceptedFiles.map((file) =>
+          controller(
+            file,
+            calParams.readingSpeed,
+            calParams.imageViewTime,
+            calParams.complexityFactor
+          )
+        )
       ).then((val) => {
         setIsLoading(false);
         setFileDurArr(fileDurArr.concat(val));
@@ -150,17 +157,17 @@ export default function Main() {
                     <FileDurationItem name={file[0]} dur={file[1]} />
                   </Box>
                 ))}
+                {isLoading && (
+                  <Spinner
+                    size="xl"
+                    alignSelf="center"
+                    thickness="4px"
+                    speed="0.65s"
+                    emptyColor="gray.200"
+                    color="blue.500"
+                  />
+                )}
               </Stack>
-              {isLoading && (
-                <Spinner
-                  size="xl"
-                  alignSelf="center"
-                  thickness="4px"
-                  speed="0.65s"
-                  emptyColor="gray.200"
-                  color="blue.500"
-                />
-              )}
             </CardBody>
           </Card>
         )}
