@@ -46,7 +46,7 @@ export default function Main() {
   });
 
   const onInputChange = (params: CalSettings) => {
-    if (!calParams.advanced) {
+    if (!calParams.advanced || (calParams.advanced && !params.advanced)) {
       setCalParams({
         readingSpeed: calReadingSpeed(params.contentType, params.audienceType),
         imageViewTime: calImageViewTime(params.contentType),
