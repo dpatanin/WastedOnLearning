@@ -162,6 +162,11 @@ Finally, let's assume the following definitions:
 
 This follows a bit the trend of the reading speeds, to have some anchor of orientation.
 
+### Audio & Video
+
+Currently, audio & video duration are calculated as they are and not altered.
+If you assume that for your content it should be accounted longer or shorter, please do so by increasing or decreasing the complexity factor.
+
 ### Interactions & Quizzes
 
 Defining additional durations due to interactions and quizzes is currently not regarded by this tool, as those depend highly on the technology used.
@@ -178,6 +183,8 @@ A different role of the factor is the compensation for many unconsidered aspects
 The current categories established are very broad and for the most part do not consider factors like age, familiarity with the content or other topics mentioned before.
 While a general compensatory function is not necessarily bad, for now it compensates for too many factors and poses high risks especially for overestimation.
 So, be aware how much of your content truly requires additional compensation or shows higher complexity than assessed already and avoid vast overestimations.
+
+For now, the complexity factor is constructed by comparing the relation of the content type and audience group, plus a total compensation constant of 0.4.
 
 ## Indications & Future Potential
 
