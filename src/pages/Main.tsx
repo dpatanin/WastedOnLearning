@@ -5,16 +5,21 @@ import {
   CardHeader,
   Container,
   Heading,
+  HStack,
   Icon,
+  IconButton,
   Image,
   Spinner,
   Stack,
   StackDivider,
   Text,
+  Tooltip,
 } from '@chakra-ui/react';
 import { useCallback, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { IoCloseOutline, IoDownloadOutline } from 'react-icons/io5';
 import { TfiUpload } from 'react-icons/tfi';
+import { utils, writeFileXLSX } from 'xlsx';
 import { accept, controller } from '../calculator/controller';
 import FileDurationItem from '../components/FileDurationItem';
 import ParamSettings from '../components/ParamSettings';
@@ -24,6 +29,7 @@ import {
   calComplexityFactor,
   calImageViewTime,
   calReadingSpeed,
+  formatTime,
 } from '../lib/helper';
 import { CalSettings } from '../lib/types';
 
@@ -113,6 +119,18 @@ export default function Main() {
     }
   };
 
+  const exportExcel = useCallback(() => {
+    const data = fileDurArr.map((f) => {
+      return { Filename: f[0], Duration: formatTime(f[1]) };
+    });
+
+    const ws = utils.json_to_sheet(data);
+    const wb = utils.book_new();
+
+    utils.book_append_sheet(wb, ws, 'Data');
+    writeFileXLSX(wb, 'learning_duration.xlsx');
+  }, [fileDurArr]);
+
   return (
     <Container maxW="4xl">
       <Stack
@@ -147,7 +165,23 @@ export default function Main() {
         {(fileDurArr.length > 0 || isLoading) && (
           <Card>
             <CardHeader>
-              <Heading size="md">Duration list</Heading>
+              <HStack justifyContent="flex-end">
+                <Tooltip label="Download Excel" aria-label="download tooltip">
+                  <IconButton
+                    aria-label="download"
+                    icon={<IoDownloadOutline />}
+                    onClick={exportExcel}
+                  />
+                </Tooltip>
+                <Tooltip label="Clear list" aria-label="clear tooltip">
+                  <IconButton
+                    aria-label="claer"
+                    icon={<IoCloseOutline />}
+                    alignSelf="right"
+                    onClick={() => setFileDurArr([])}
+                  />
+                </Tooltip>
+              </HStack>
             </CardHeader>
 
             <CardBody>
