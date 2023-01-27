@@ -22,13 +22,17 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### Participation
+### Contribution
 
 Open a new branch for your feature or bugfix and create a pull request once you see it as ready.
 
 Here's the structure how to add new modules for unsupported file types:
 
-WIP
+The `controller.ts` file contains the logic controlling which module to use for which file or package type and which files to accept in the first place.
+Make sure to carefully define & add which type and extensions will be supported by your module.
+If it is a zip-package you need to define additional logic by which to identify your package type.
+The module itself must have a clear name and follow the same structure as the other modules to be chosen dynamically.
+This module should contain all logic to count and return all factors and aspects the controller requests (`type FileCalData`).
 
 ## Research
 
