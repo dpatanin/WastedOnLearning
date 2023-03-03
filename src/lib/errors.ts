@@ -1,14 +1,14 @@
 export class FileTypeError extends Error {
   constructor(
     msg?: string,
-    expected_type?: string | string[],
-    received_type?: string | string[]
+    expectedType?: string | string[],
+    receivedType?: string | string[]
   ) {
-    const msg_arr = [msg || 'Wrong file type found.'];
-    if (expected_type) msg_arr.push(`Expected: ${expected_type}`);
-    if (received_type) msg_arr.push(`Received: ${received_type}`);
+    const msgArr = [msg || 'Wrong file type found.'];
+    if (expectedType) msgArr.push(`Expected: ${expectedType}`);
+    if (receivedType) msgArr.push(`Received: ${receivedType}`);
 
-    super(...msg_arr);
+    super(...msgArr);
 
     Object.setPrototypeOf(this, FileTypeError.prototype);
   }
