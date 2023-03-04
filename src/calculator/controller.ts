@@ -1,18 +1,20 @@
+import JSZip from 'jszip';
 import { Accept } from 'react-dropzone';
 import { FileTypeError } from '../lib/errors';
-import PDF from './PDF';
+import SCORM from './SCORM';
 import TEXT from './TEXT';
 
 export const accept: Accept = {
   'text/plain': ['.txt'],
-  'application/pdf': ['.pdf'],
+  'application/zip': ['.zip'],
 };
 
 const CalType: {
   [key: keyof Accept]: (file: File) => Promise<FileCalData>;
 } = {
   'text/plain': TEXT,
-  'application/pdf': PDF,
+  'application/zip': ZIP,
+  'application/x-zip-compressed': ZIP,
 };
 
 export type FileCalData = {
@@ -48,5 +50,17 @@ export function controller(
       complexityFactor;
 
     return [file.name, totalTime];
+  });
+}
+
+function ZIP(file: File): Promise<FileCalData> {
+  const zip = new JSZip();
+
+  return zip.loadAsync(file).then((zFile) => {
+    zFile.forEach((e) => {
+      console.log(e);
+    });
+
+    return SCORM(file);
   });
 }
