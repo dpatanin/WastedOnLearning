@@ -20,7 +20,11 @@ import { useDropzone } from 'react-dropzone';
 import { IoCloseOutline, IoDownloadOutline } from 'react-icons/io5';
 import { TfiUpload } from 'react-icons/tfi';
 import { utils, writeFileXLSX } from 'xlsx';
-import { accept, controller } from '../calculator/controller';
+import {
+  accept,
+  controller,
+  supportedPackages,
+} from '../calculator/controller';
 import FailedResultItem from '../components/FailedResultItem';
 import FileDurationItem from '../components/FileDurationItem';
 import ParamSettings from '../components/ParamSettings';
@@ -88,7 +92,6 @@ export default function Main() {
           if (result.status === 'fulfilled') {
             setFileDurArr(fileDurArr.concat(result.value));
           } else {
-            console.log(result.reason);
             setFailedResults(failedResults.concat(result.reason));
           }
         }
@@ -128,9 +131,14 @@ export default function Main() {
     } else {
       return [
         'Drag `n` drop some files here, or click to select files.',
-        <br key="newLine" />,
-        'Supported Filetypes: ',
-        Object.values(accept).map((val) => val + ','),
+        <br key="newLine 1" />,
+        'Supported Filetypes:',
+        Object.values(accept)
+          .map((val) => ' ' + val)
+          .toString(),
+        <br key="newLine 2" />,
+        'Supported Packages (as .zip):',
+        supportedPackages.map((val) => ' ' + val).toString(),
       ];
     }
   };
