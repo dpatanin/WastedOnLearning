@@ -21,6 +21,7 @@ import { IoCloseOutline, IoDownloadOutline } from 'react-icons/io5';
 import { TfiUpload } from 'react-icons/tfi';
 import { utils, writeFileXLSX } from 'xlsx';
 import { accept, controller } from '../calculator/controller';
+import FailedResultItem from '../components/FailedResultItem';
 import FileDurationItem from '../components/FileDurationItem';
 import ParamSettings from '../components/ParamSettings';
 import { baseParams } from '../lib/factors';
@@ -36,6 +37,7 @@ import { CalSettings } from '../lib/types';
 export default function Main() {
   const [isLoading, setIsLoading] = useState(false);
   const [fileDurArr, setFileDurArr] = useState<[string, number][]>([]);
+  const [failedResults, setFailedResults] = useState<Error[]>([]);
   const [calParams, setCalParams] = useState<CalSettings>({
     readingSpeed: calReadingSpeed(
       baseParams.contentType,
@@ -72,7 +74,7 @@ export default function Main() {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       setIsLoading(true);
-      Promise.all(
+      Promise.allSettled(
         acceptedFiles.map((file) =>
           controller(
             file,
@@ -81,12 +83,26 @@ export default function Main() {
             calParams.complexityFactor
           )
         )
-      ).then((val) => {
+      ).then((results) => {
+        for (const result of results) {
+          if (result.status === 'fulfilled') {
+            setFileDurArr(fileDurArr.concat(result.value));
+          } else {
+            console.log(result.reason);
+            setFailedResults(failedResults.concat(result.reason));
+          }
+        }
+
         setIsLoading(false);
-        setFileDurArr(fileDurArr.concat(val));
       });
     },
-    [fileDurArr, setFileDurArr, calParams]
+    [
+      calParams.readingSpeed,
+      calParams.imageViewTime,
+      calParams.complexityFactor,
+      fileDurArr,
+      failedResults,
+    ]
   );
 
   const { getRootProps, getInputProps, isDragAccept, isDragReject } =
@@ -162,7 +178,7 @@ export default function Main() {
           </Box>
         </Box>
 
-        {(fileDurArr.length > 0 || isLoading) && (
+        {(fileDurArr.length > 0 || failedResults.length > 0 || isLoading) && (
           <Card>
             <CardHeader>
               <HStack justifyContent="flex-end">
@@ -178,7 +194,10 @@ export default function Main() {
                     aria-label="claer"
                     icon={<IoCloseOutline />}
                     alignSelf="right"
-                    onClick={() => setFileDurArr([])}
+                    onClick={() => {
+                      setFileDurArr([]);
+                      setFailedResults([]);
+                    }}
                   />
                 </Tooltip>
               </HStack>
@@ -189,6 +208,11 @@ export default function Main() {
                 {fileDurArr.map((file, idx) => (
                   <Box key={file[0] + idx}>
                     <FileDurationItem name={file[0]} dur={file[1]} />
+                  </Box>
+                ))}
+                {failedResults.map((err, idx) => (
+                  <Box key={err.name + idx}>
+                    <FailedResultItem err={err} />
                   </Box>
                 ))}
                 {isLoading && (

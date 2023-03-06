@@ -13,3 +13,11 @@ export class FileTypeError extends Error {
     Object.setPrototypeOf(this, FileTypeError.prototype);
   }
 }
+
+export class PackageTypeError extends Error {
+  constructor(msg?: string) {
+    super(msg);
+
+    Object.setPrototypeOf(this, PackageTypeError.prototype);
+  }
+}
