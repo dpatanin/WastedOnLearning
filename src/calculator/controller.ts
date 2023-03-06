@@ -2,13 +2,15 @@ import JSZip from 'jszip';
 import { Accept } from 'react-dropzone';
 import { FileTypeError } from '../lib/errors';
 import { PackageTypeError } from './../lib/errors';
-import SCORM from './SCORM';
+import SCORM, { isSCORM } from './SCORM';
 import TEXT from './TEXT';
 
 export const accept: Accept = {
   'text/plain': ['.txt'],
   'application/zip': ['.zip'],
 };
+
+export const supportedPackages = ['SCORM 2004 3rd Edition'];
 
 const CalType: {
   [key: keyof Accept]: (file: File) => Promise<FileCalData>;
@@ -17,10 +19,6 @@ const CalType: {
   'application/zip': ZIP,
   'application/x-zip-compressed': ZIP,
 };
-
-enum pkgType {
-  SCORM = 'SCORM',
-}
 
 export type FileCalData = {
   wordCount: number;
@@ -61,18 +59,11 @@ export function controller(
 function ZIP(file: File): Promise<FileCalData> {
   const zip = new JSZip();
 
-  return zip.loadAsync(file).then((zFile) => {
-    zFile.forEach((e) => {
-      // Identify package type
-      console.log(e);
-      if (false) {
-      } else {
-        throw new PackageTypeError(
-          `Type of package: ${file.name} not supported.`
-        );
-      }
-    });
-
-    return SCORM(file);
+  return zip.loadAsync(file).then(async (zFile) => {
+    if (await isSCORM(zFile)) return SCORM(zFile);
+    else
+      throw new PackageTypeError(
+        `Type of package: ${file.name} not supported.`
+      );
   });
 }
