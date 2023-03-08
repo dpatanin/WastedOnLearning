@@ -13,7 +13,7 @@ import {
   Stack,
   StackDivider,
   Text,
-  Tooltip
+  Tooltip,
 } from '@chakra-ui/react';
 import { useCallback, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -23,7 +23,7 @@ import { utils, writeFileXLSX } from 'xlsx';
 import {
   accept,
   controller,
-  supportedPackages
+  supportedPackages,
 } from '../calculator/controller';
 import FailedResultItem from '../components/FailedResultItem';
 import FileDurationItem from '../components/FileDurationItem';
@@ -34,7 +34,7 @@ import {
   calComplexityFactor,
   calImageViewTime,
   calReadingSpeed,
-  formatTime
+  formatTime,
 } from '../lib/helper';
 import { CalSettings } from '../lib/types';
 
@@ -90,9 +90,9 @@ export default function Main() {
       ).then((results) => {
         for (const result of results) {
           if (result.status === 'fulfilled') {
-            setFileDurArr(fileDurArr.concat(result.value));
+            setFileDurArr(fileDurArr.concat([result.value]));
           } else {
-            setFailedResults(failedResults.concat(result.reason));
+            setFailedResults(failedResults.concat([result.reason]));
           }
         }
 
