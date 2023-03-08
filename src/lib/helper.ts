@@ -56,3 +56,9 @@ export function formatTime(seconds: number) {
 
   return d ? `${d} Days, ${time}` : time;
 }
+
+export const RGX = {
+  image: /(png|jpeg|jpg|gif|webp|svg)/,
+  video: /(mp4|mov|avi|wmv|avchd|flv|f4v|swf|mkv|webm)/,
+  audio: /(mp3|wav|aiff|flac|m4a|ogg|aac|wma|ape)/,
+};
