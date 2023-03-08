@@ -20,3 +20,9 @@ export type CalSettings = {
   contentType: ContentType;
   audienceType: AudienceType;
 };
+
+export enum FileType {
+  TXT = 'text/plain',
+  ZIP = 'application/zip',
+  XZIP = 'application/x-zip-compressed',
+}

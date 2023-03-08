@@ -1,23 +1,21 @@
 import JSZip from 'jszip';
-import { Accept } from 'react-dropzone';
 import { FileTypeError } from '../lib/errors';
 import { PackageTypeError } from './../lib/errors';
+import { FileType } from './../lib/types';
 import SCORM, { isSCORM } from './SCORM';
 import TEXT from './TEXT';
 
-export const accept: Accept = {
-  'text/plain': ['.txt'],
-  'application/zip': ['.zip'],
+export const accept: { [key: string]: string[] } = {
+  [FileType.TXT]: ['.txt'],
+  [FileType.ZIP]: ['.zip'],
 };
 
 export const supportedPackages = ['SCORM 2004 3rd Edition'];
 
-const CalType: {
-  [key: keyof Accept]: (file: File) => Promise<FileCalData>;
-} = {
-  'text/plain': TEXT,
-  'application/zip': ZIP,
-  'application/x-zip-compressed': ZIP,
+const CalType: { [key: string]: (file: File) => Promise<FileCalData> } = {
+  [FileType.TXT]: TEXT,
+  [FileType.ZIP]: ZIP,
+  [FileType.XZIP]: ZIP,
 };
 
 export type FileCalData = {
