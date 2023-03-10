@@ -1,6 +1,49 @@
 import { baseParams, facImageViewTime, facReadingSpeed } from './factors';
 import { AudienceType, ContentType } from './types';
 
+export function getDuration(file: File, type: 'video' | 'audio') {
+  const url = (URL || webkitURL).createObjectURL(file);
+  const doc = document.createElement(type);
+
+  doc.preload = 'metadata';
+  doc.src = url;
+
+  return new Promise<number>((resolve, reject) => {
+    doc.addEventListener('loadedmetadata', function () {
+      if (doc.duration) {
+        resolve(Number(doc.duration.toFixed(2)));
+      } else reject(`Duration could not be read. File: ${file.name}`);
+
+      (URL || webkitURL).revokeObjectURL(url);
+    });
+  });
+}
+
+export function settleAndSumDurations(promises: Promise<number>[]) {
+  return Promise.allSettled(promises).then((results) => {
+    const durations: number[] = [];
+
+    for (const result of results) {
+      if (result.status === 'fulfilled') {
+        durations.push(result.value);
+      } else {
+        console.log(result.reason);
+      }
+    }
+
+    switch (durations.length) {
+      case 0:
+        return 0;
+
+      case 1:
+        return durations[0];
+
+      default:
+        return durations.reduce((a, b) => a + b);
+    }
+  });
+}
+
 export function countWords(text: string) {
   return text.split(' ').length;
 }
